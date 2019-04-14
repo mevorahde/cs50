@@ -3,3 +3,62 @@
     width: 100%;
   }
 }
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #041E42;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #FFA300;
+  color: #BE3A34;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #4caf50;
+  color: #00A9E0;
+}
+
+/* Right-aligned section inside the top navigation */
+.topnav-center {
+  float: center;
+}
+
+.topnav-lef {
+  float: left;
+}
+
+
+footer span {
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.9em;
+  color: #444;
+}
+
+.footerLink{
+  color: #037367;
+}
+.footerLink:hover{
+    text-decoration: none;
+    color: #da9284;
+}
+
+.footerLink:visited{
+    color: #551A8B;
+    text-decoration: none;
+}
