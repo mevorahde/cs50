@@ -1,9 +1,13 @@
+body {
+  background-color: #00A9E0;
+  color: white;
+}
+
 @media only screen and (max-width: 600px) {
   .columns {
     width: 100%;
   }
 }
-
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: #041E42;
@@ -37,20 +41,11 @@
   float: center;
 }
 
-.topnav-lef {
-  float: left;
-}
-
-body{
-  background-color: #00A9E0;
-  color: white;
-}
-
-.jumbotron{
+.jumbotron {
   background-color: #FFA300;
 }
 
-#warning{
+#warning {
   margin: 15px;
 }
 
@@ -58,7 +53,7 @@ ul {
   list-style-type: none;
 }
 
-.plot{
+.plot {
   margin: 15px;
 }
 
@@ -70,16 +65,18 @@ footer span {
   color: #444;
 }
 
-.footerLink{
+.footerLink {
   color: #BE3A34;
 }
 
-.footerLink:hover{
-    text-decoration: none;
-    color: #00A9E0;
+.footerLink:hover {
+  text-decoration: none;
+  color: #00A9E0;
 }
 
-.footerLink:visited{
-    color: #551A8B;
-    text-decoration: none;
+.footerLink:visited {
+  color: #551A8B;
+  text-decoration: none;
 }
+
+/*# sourceMappingURL=style.css.map */
