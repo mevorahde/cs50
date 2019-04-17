@@ -41,22 +41,6 @@
   float: left;
 }
 
-body{
-  background-color: #00A9E0;
-  color: white;
-}
-
-.jumbotron{
-  background-color: #FFA300;
-}
-
-#warning{
-  margin: 15px;
-}
-
-ul {
-  list-style-type: none;
-}
 
 footer span {
   margin-top: 5px;
@@ -67,12 +51,11 @@ footer span {
 }
 
 .footerLink{
-  color: #BE3A34;
+  color: #037367;
 }
-
 .footerLink:hover{
     text-decoration: none;
-    color: #00A9E0;
+    color: #da9284;
 }
 
 .footerLink:visited{
