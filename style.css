@@ -1,85 +1,82 @@
-@media only screen and (max-width: 600px) {
-    .columns {
-        width: 100%;
-    }
+body {
+  background-color: #00A9E0;
+  color: white;
 }
 
+@media only screen and (max-width: 600px) {
+  .columns {
+    width: 100%;
+  }
+}
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #041E42;
-    overflow: hidden;
+  background-color: #041E42;
+  overflow: hidden;
 }
 
 /* Style the links inside the navigation bar */
 .topnav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
 /* Change the color of links on hover */
 .topnav a:hover {
-    background-color: #FFA300;
-    color: #BE3A34;
+  background-color: #FFA300;
+  color: #BE3A34;
 }
 
 /* Add a color to the active/current link */
 .topnav a.active {
-    background-color: #4caf50;
-    color: #00A9E0;
+  background-color: #4caf50;
+  color: #00A9E0;
 }
 
 /* Right-aligned section inside the top navigation */
 .topnav-center {
-    float: center;
-}
-
-.topnav-lef {
-    float: left;
-}
-
-body {
-    background-color: #00A9E0;
-    color: white;
+  float: center;
 }
 
 .jumbotron {
-    background-color: #FFA300;
+  background-color: #FFA300;
 }
 
 #warning {
-    margin: 15px;
+  margin: 15px;
 }
 
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .plot {
-    margin: 15px;
+  margin: 15px;
 }
 
 footer span {
-    margin-top: 5px;
-    display: flex;
-    justify-content: flex-end;
-    font-size: 0.9em;
-    color: #444;
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.9em;
+  color: #444;
 }
 
 .footerLink {
-    color: #BE3A34;
+  color: #BE3A34;
 }
 
 .footerLink:hover {
-    text-decoration: none;
-    color: #00A9E0;
+  text-decoration: none;
+  color: #00A9E0;
 }
 
 .footerLink:visited {
-    color: #551A8B;
-    text-decoration: none;
+  color: #551A8B;
+  text-decoration: none;
 }
+
+/*# sourceMappingURL=style.css.map */
