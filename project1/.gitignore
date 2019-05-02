@@ -1,4 +1,4 @@
-
+﻿
 # Created by httpswww.gitignore.ioapipython
 # Edit at httpswww.gitignore.iotemplates=python
 
@@ -67,6 +67,7 @@ db.sqlite3
 # Flask stuff
 instance
 .webassets-cache
+flask_session
 
 # Scrapy stuff
 .scrapy
