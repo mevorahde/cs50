@@ -1,6 +1,9 @@
 {% block content %}
 
-<h1> Login Successful, welcome. </h1>
-<p><a href="{{ url_for('index') }}">Go Somewhere Nice</a>
+<h1> Success! </h1>
+	<div>
+		{{ message }}
+	</div>
+	<p><a href="{{ url_for('index') }}">Go Somewhere Nice</a>
 
 {% endblock %}
