@@ -1,36 +1,42 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="wrapper fadeInDown first">
-  <div id="formContent">
+<div class="container">
+    <section id="content">
 <form class="form-horizontal" action="{{ url_for('signup') }}" method="POST">
   <fieldset>
-    <div id="legend">
-      <legend class="">Register</legend>
+    <div class="legend">
+       <h1>Register</h1>
     </div>
     <div class="control-group">
       <!-- Username -->
       <label class="control-label fadeIn second"  for="username">Username</label>
       <div class="controls fadeIn second">
         <input type="text" id="username" name="username" placeholder="Username" class="input-xlarge" required>
-        <p class="help-block">Username can contain any letters or numbers, without spaces</p>
       </div>
     </div>
 
-    <div class="control-group">
-      <!-- E-mail -->
+    <!--<div class="control-group">
       <label class="control-label fadeIn second" for="email">E-mail</label>
       <div class="controls fadeIn second">
         <input type="email" id="email" name="email" placeholder="E-mail" class="input-xlarge" required>
-        <p class="help-block">Please provide your E-mail</p>
+      </div>
+    </div>-->
+
+        <div class="control-group">
+      <!-- Username -->
+      <label class="control-label fadeIn second"  for="username">E-Mail</label>
+      <div class="controls fadeIn second">
+        <input type="email" id="email" name="email" placeholder="E-mail" class="input-xlarge" required>
       </div>
     </div>
+
+
 
     <div class="control-group">
       <!-- Password-->
       <label class="control-label fadeIn second" for="password">Password</label>
       <div class="controls fadeIn second">
         <input type="password" id="password" name="password" placeholder="Password" class="input-xlarge" required>
-        <p class="help-block">Password should be at least 4 characters</p>
       </div>
     </div>
 
@@ -39,7 +45,6 @@
       <label class="control-label fadeIn second"  for="passwordConfirm">Password (Confirm)</label>
       <div class="controls fadeIn second">
         <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm Password" class="input-xlarge" required>
-        <p class="help-block">Please confirm password</p>
       </div>
     </div>
 
@@ -52,6 +57,6 @@
     </div>
   </fieldset>
 </form>
-        </div>
+        </section>
 </div>
 {% endblock %}

@@ -26,16 +26,17 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     if 'user_name' in session:
         #user = session.get('user_name')
-        return render_template('index.html', message="Login as {}".format(session.get('user_name')))
-    return render_template('index.html',message="test")
+        return render_template('index.html', user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
+    return render_template('index.html')
 
 
 @app.route("/login", methods = ['POST'])
 def login():
-    username = request.form.get("user_name")
+    #username = request.form.get("user_name")
+    username = request.form.get("username")
     password = request.form.get("password")
     session['user_name'] = username
-    #session_username = session['user_name']
+    session_username = session['user_name']
     #return (session['user_name'])
 
     if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
@@ -43,6 +44,12 @@ def login():
         return redirect(url_for("index"))
     else:
         return render_template("error.html", message="Invalid Username or Password.")
+    
+    
+@app.route("/logout")
+def logout():
+    del session['user_name']
+    return redirect(url_for("index"))
 
 
 @app.route("/register")
