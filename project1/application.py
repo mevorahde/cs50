@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -24,15 +24,23 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/")
 @app.route("/home")
 def index():
-    return render_template('index.html')
+    if 'user_name' in session:
+        #user = session.get('user_name')
+        return render_template('index.html', message="Login as {}".format(session.get('user_name')))
+    return render_template('index.html',message="test")
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods = ['POST'])
 def login():
     username = request.form.get("user_name")
     password = request.form.get("password")
-    if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password", {"username" :username, "password": password}):
-        return render_template("success.html", message="Welcome back!")
+    session['user_name'] = username
+    #session_username = session['user_name']
+    #return (session['user_name'])
+
+    if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
+                  {"username": username, "password": password}):
+        return redirect(url_for("index"))
     else:
         return render_template("error.html", message="Invalid Username or Password.")
 
