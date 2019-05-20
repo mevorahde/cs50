@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<body>
+<div class="container">
+
+    {% if user_name %}
+    <ul id="nav_bar">
+        <li class="nav_button"> <p> {{ message }}</p></li>
+        <li class="nav_button"> <a href="/logout">Logout</a> </li>
+    </ul>
+    {% else %}
+    {% endif %}
+
+    <section id="content">
+        <form action="{{ url_for('login') }}" method="POST">
+            <h1>Login Form</h1>
+            <div>
+                <input type="text" placeholder="Username" id="username" required/>
+            </div>
+            <div>
+                <input type="password" placeholder="Password" id="password" required/>
+            </div>
+            <div>
+                <input type="submit" value="Log in" />
+                <a href="/forgot-password">Lost your password?</a>
+                <a href="/register">Register</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+{% endblock %}
