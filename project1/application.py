@@ -1,9 +1,12 @@
-import os
+import os, smtplib, ev
 
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
+from flask_login import login_required
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 app = Flask(__name__,  instance_relative_config=True)
 
@@ -25,21 +28,20 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/home")
 def index():
     if 'user_name' in session:
-        #user = session.get('user_name')
         return render_template('index.html', user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
     return render_template('index.html')
 
 
 @app.route("/login", methods = ['POST'])
 def login():
-    #username = request.form.get("user_name")
     username = request.form.get("username")
     password = request.form.get("password")
     session['user_name'] = username
-    session_username = session['user_name']
-    #return (session['user_name'])
-
-    if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
+    
+    if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password AND Is_Temp_Password = 1",
+                   {"username": username, "password": password}):
+        return render_template("create-new-password.hmtl")
+    elif db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
                   {"username": username, "password": password}):
         return redirect(url_for("index"))
     else:
@@ -80,10 +82,55 @@ def forgot_password_page():
     return render_template("forgot-password.html")
 
 
-@app.route("/email-sent")
-def send_password_email():
-    return render_template("forgot-password.html")
+@app.route("/reset-password", methods=["POST"])
+def reset_password():
+    email = request.form.get("email")
+    temp_password = ev.os.environ['temp_password']
+    user_id = db.execute("SELECT user_id FROM users WHERE email = :email",
+                  {"email": email})
+    if db.execute("SELECT user_id FROM users WHERE email = :email",
+                  {"email": email}).rowcount == 1:
+        db.execute("UPDATE users SET password = :temp_password, is_temp_password = '1' WHERE user_id = (SELECT user_id FROM users WHERE email = :email)",
+                   {"temp_password": temp_password, "email": email})
+        db.commit()
+        try:
+            send_email = ev.os.environ['email']
+            password = ev.os.environ['password']
+        
+            subject = ev.os.environ['subject']
+            message = ev.os.environ['message']
+        
+            msg = MIMEMultipart()
+            msg['From'] = send_email
+            msg['To'] = email
+            msg['Subject'] = subject
+        
+            msg.attach(MIMEText(message, 'plain'))
+            server = smtplib.SMTP('smtp.live.com', 587)
+            server.starttls()
+            server.login(email, password)
+            text = msg.as_string()
+            server.sendmail(send_email, email, text)
+            server.quit()
+        except Exception as e:
+            print(e.message, e.args)
+        finally:
+            return render_template("success.html",
+                                   message="Your password has been changed. Please check your email for your temp password and login.")
+    else:
+        return render_template("error.html", message="Invalid Email.")
 
 
+@app.route("/new-password", methods=["POST"])
+@login_required
+def new_password():
+    user_id = db.execute("SELECT user_id FROM users WHERE user_name = :user_name",
+                  {"user_name": session['user_name']})
+    db.execute("UPDATE users SET password = :new_password, is_temp_password = '0' WHERE user_id = :user_id",
+               {"new_password": new_password, "user_id": user_id})
+    db.commit()
+    return redirect(url_for("index"))
+
+    
 if __name__ == "__main__":
     app.run()
