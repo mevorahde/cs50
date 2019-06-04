@@ -53,6 +53,14 @@ def books():
     return render_template('books.html', books=books)
 
 
+@app.route("/search", methods = ['POST'])
+def search():
+    book_results = True
+    search_request = request.form.get("search")
+    search_results = db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn like '%:search_request% OR title like '%:search_request%' OR author like '%:search_request%' OR year like '%:search_request%'", {"search_request": search_request}).fetchall()
+    return render_template('books.html', search_results=search)
+
+
 @app.route("/logout")
 def logout():
     del session['user_name']
