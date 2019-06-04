@@ -3,6 +3,10 @@
 <body>
 <div class="container">
 
+        <form action="{{ url_for('search') }}" method="POST">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
 
 
   <div class="flight-container" style="overflow: auto; max-height: 80vh">
@@ -14,17 +18,34 @@
                             <th scope="col">title</th>
                             <th scope="col">author</th>
                             <th scope="col">year</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for book in books %}
-                        <tr id={{ book.id }}>
-                            <th scope="row">{{ book.isbn }}</th>
+                    {% if book_results %}
+                    {% for result in results %}
+                        <tr id={{ result.id }}>
+                            <td>{{ result.isbn }}</td>
+                            <td> {{ result.title }} </td>
+                            <td> {{ result.author }} </td>
+                            <td> {{ result.year }} </td>
+                            <td> <a href="">SELECT</a> </td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                     {% for book in books %}
+                        <tr>
+                            <td>{{ book.isbn }}</td>
                             <td> {{ book.title }} </td>
                             <td> {{ book.author }} </td>
                             <td> {{ book.year }} </td>
+                            <td> <a href="">SELECT</a> </td>
                         </tr>
                     {% endfor %}
+                    {% endif %}
+
+
+
                     </tbody>
                 </table>
             </div>
