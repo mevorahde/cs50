@@ -16,6 +16,14 @@
 </head>
 		<body>
 
+		    {% if user_name %}
+    <ul id="nav_bar">
+        <li class="nav_button"> <p> {{ message }}</p></li>
+        <li class="nav_button"> <a href="/logout">Logout</a> </li>
+    </ul>
+    {% else %}
+    {% endif %}
+
 		{% block content%}
 		{% endblock %}
 		</body>

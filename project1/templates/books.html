@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<body>
+<div class="container">
+
+
+
+  <div class="flight-container" style="overflow: auto; max-height: 80vh">
+            <div class="table-responsive">
+                <table class="table" id="books">
+                    <thead>
+                        <tr>
+                            <th scope="col">isbn</th>
+                            <th scope="col">title</th>
+                            <th scope="col">author</th>
+                            <th scope="col">year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for book in books %}
+                        <tr id={{ book.id }}>
+                            <th scope="row">{{ book.isbn }}</th>
+                            <td> {{ book.title }} </td>
+                            <td> {{ book.author }} </td>
+                            <td> {{ book.year }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+</body>
+{% endblock %}

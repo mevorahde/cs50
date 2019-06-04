@@ -26,7 +26,7 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     if 'user_name' in session:
         #user = session.get('user_name')
-        return render_template('index.html', user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
+        return render_template('books.html', books=books, user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
     return render_template('index.html')
 
 
@@ -41,11 +41,18 @@ def login():
 
     if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
                   {"username": username, "password": password}):
-        return redirect(url_for("index"))
+        return render_template('books.html', books=books, user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
     else:
         return render_template("error.html", message="Invalid Username or Password.")
-    
-    
+
+
+@app.route("/books", methods = ['POST'])
+def books():
+    book_results = False
+    books = db.execute("SELECT id, isbn, title, author, year FROM books").fetchall()
+    return render_template('books.html', books=books)
+
+
 @app.route("/logout")
 def logout():
     del session['user_name']
