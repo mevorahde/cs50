@@ -26,18 +26,16 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     if 'user_name' in session:
         #user = session.get('user_name')
-        return render_template('books.html', books=books, user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
+        return render_template('index.html', books=books, user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
     return render_template('index.html')
 
 
 @app.route("/login", methods = ['POST'])
 def login():
-    #username = request.form.get("user_name")
     username = request.form.get("username")
     password = request.form.get("password")
     session['user_name'] = username
     session_username = session['user_name']
-    #return (session['user_name'])
 
     if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
                   {"username": username, "password": password}):
@@ -56,9 +54,13 @@ def books():
 @app.route("/search", methods = ['POST'])
 def search():
     book_results = True
+    no_results = False
     search_request = request.form.get("search")
-    search_results = db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn like '%:search_request% OR title like '%:search_request%' OR author like '%:search_request%' OR year like '%:search_request%'", {"search_request": search_request}).fetchall()
-    return render_template('books.html', search_results=search)
+    search_results = db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn ILIKE :search_request OR title ILIKE :search_request OR author ILIKE :search_request ", {"search_request": '%' + search_request + '%'}).fetchall()
+    if db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn ILIKE :search_request OR title ILIKE :search_request OR author ILIKE :search_request ", {"search_request": '%' + search_request + '%'}).rowcount == 0:
+        no_results = True
+        return render_template('books.html', search_results=search_results, no_results=True, message="No Results Returned!")
+    return render_template('books.html', search_results=search_results, book_results=True, no_results=False)
 
 
 @app.route("/logout")

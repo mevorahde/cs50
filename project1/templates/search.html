@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <section id="content">
+<form class="form-horizontal" action="{{ url_for('search') }}" method="POST">
+  <fieldset>
+    <div class="legend">
+       <h1>Search for a book</h1>
+    </div>
+    <div class="control-group">
+      <!-- Username -->
+      <label class="control-label"  for="search">Search :</label>
+      <div class="controls">
+        <input type="text" id="search" name="search" placeholder="Search for a book" class="input-xlarge" required>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <button class="btn btn-success">Search</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+
+        </section>
+
+  		    {% if search_result %}
+    <ul id="nav_bar">
+        <li class="nav_button"> <p> {{ message }}</p></li>
+        <li class="nav_button"> <a href="/logout">Logout</a> </li>
+    </ul>
+    {% else %}
+    {% endif %}
+</div>
+{% endblock %}

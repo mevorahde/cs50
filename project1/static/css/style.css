@@ -297,7 +297,7 @@ text-decoration:none;
 
 #books tr:nth-child(even){background-color: #f2f2f2;}
 
-#books tr:hover {background-color: #ddd;}
+#books tr:hover {background-color: #ffff99;}
 
 #books th {
   padding-top: 12px;
@@ -305,4 +305,22 @@ text-decoration:none;
   text-align: left;
   background-color: #4CAF50;
   color: white;
+}
+
+#no-results{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 90px;
+}
+#search-form{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#books-page-title{
+    text-align: center;
+    vertical-align: middle;
+    line-height: 90px;
 }
