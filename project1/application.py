@@ -1,4 +1,4 @@
-import os
+import os, hashlib
 
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
@@ -25,27 +25,45 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/home")
 def index():
     if 'user_name' in session:
-        #user = session.get('user_name')
-        return render_template('index.html', user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
+        is_session = True
     return render_template('index.html')
 
 
 @app.route("/login", methods = ['POST'])
 def login():
-    #username = request.form.get("user_name")
-    username = request.form.get("username")
-    password = request.form.get("password")
-    session['user_name'] = username
-    session_username = session['user_name']
-    #return (session['user_name'])
+    if session.get("user_name") is None:
+        session['user_name'] = []
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        session['user_name'] = username
+        d_password = hashlib.md5(password.strip().encode('utf-8')).hexdigest()
+        if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
+                  {"username": username, "password": d_password}):
+            return render_template('books.html', books=books, user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
+        else:
+            return render_template("error.html", message="Invalid Username or Password.")
 
-    if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
-                  {"username": username, "password": password}):
-        return redirect(url_for("index"))
-    else:
-        return render_template("error.html", message="Invalid Username or Password.")
-    
-    
+
+@app.route("/books", methods = ['POST'])
+def books():
+    book_results = False
+    books = db.execute("SELECT id, isbn, title, author, year FROM books").fetchall()
+    return render_template('books.html', books=books)
+
+
+@app.route("/search", methods = ['POST'])
+def search():
+    book_results = True
+    no_results = False
+    search_request = request.form.get("search")
+    search_results = db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn ILIKE :search_request OR title ILIKE :search_request OR author ILIKE :search_request ", {"search_request": '%' + search_request + '%'}).fetchall()
+    if db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn ILIKE :search_request OR title ILIKE :search_request OR author ILIKE :search_request ", {"search_request": '%' + search_request + '%'}).rowcount == 0:
+        no_results = True
+        return render_template('books.html', search_results=search_results, no_results=True, message="No Results Returned!")
+    return render_template('books.html', search_results=search_results, book_results=True, no_results=False)
+
+
 @app.route("/logout")
 def logout():
     del session['user_name']
@@ -69,8 +87,9 @@ def signup():
         return render_template("error.html", message="The username you entered already exists. Please enter in a different username.")
     if db.execute("SELECT user_name, password, email FROM users WHERE email = :email", {"email": email}).rowcount == 1:
         return render_template("error.html", message="The email you entered already exists. Please enter in a different email.")
+    hash_pass = hashlib.md5(password.encode()).hexdigest()
     db.execute("INSERT INTO users (user_name, password, email) VALUES (:username, :password, :email)",
-        {"username": username, "password": password, "email": email})
+        {"username": username, "password": hash_pass, "email": email})
     db.commit()
     return render_template("success.html", message="Registeration complete, thanks for joining!")
 
