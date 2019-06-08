@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<body>
+<div class="container">
+    <div id="books-page-title">
+        <h1> Book Collection </h1>
+    </div>
+    <div id="search-form">
+        <form action="{{ url_for('search') }}" method="POST">
+            <input type="text" placeholder="Search.." name="search">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+
+    <div class="book-container" style="overflow: auto; max-height: 80vh">
+        <div class="table-responsive">
+            <table class="table" id="books">
+                <thead>
+                <tr>
+                    <th scope="col">ISBN</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Release Year</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if book_results %}
+                {% for result in search_results %}
+                <tr id={{ result.id }}>
+                    <td>{{ result.isbn }}</td>
+                    <td> {{ result.title }}</td>
+                    <td> {{ result.author }}</td>
+                    <td> {{ result.year }}</td>
+                    <td><a href="">SELECT</a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.isbn }}</td>
+                    <td> {{ book.title }}</td>
+                    <td> {{ book.author }}</td>
+                    <td> {{ book.year }}</td>
+                    <td><a href="">SELECT</a></td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% if no_results %}
+        <div id="no-results">
+            <h1> {{ message }} </h1>
+        </div>
+        {% else %}
+        {% endif %}
+    </div>
+</div>
+</body>
+{% endblock %}
