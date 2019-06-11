@@ -269,20 +269,20 @@ padding-bottom: 5px;
 text-decoration:none;
 }
 
-.navbar{
-    position: relative;
-    left: 600px;
-    padding-bottom: 20px;
-    display:inline;
+.topnav {
+    float: right;
+    overflow: hidden;
+	display:inline-block;
+	padding-right: 5px;
 }
 
-#nav_bar .nav_button {
-    position: relative;
-    left: 490px;
-    padding-bottom: 10px;
-    display:inline-block;
-    width: auto;
-    height: 25px;}
+/*.topnav a {
+    float: left;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}*/
+
 
 #books {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;

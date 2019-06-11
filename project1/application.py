@@ -25,14 +25,19 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/home")
 def index():
     if 'user_name' in session:
-        is_session = True
+        in_session = True
+        user = session.get('user_name', None)
+        return render_template('index.html', in_session='in_session', session_message="Logged in as {}".format(user))
     return render_template('index.html')
+
 
 
 @app.route("/login", methods = ['POST'])
 def login():
-    if session.get("user_name") is None:
-        session['user_name'] = []
+    if 'user_name' in session:
+        in_session = True
+        user = session.get('user_name', None)
+        return render_template('books.html', books=books, in_session='in_session', session_message="Logged in as {}".format(user))
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -40,7 +45,10 @@ def login():
         d_password = hashlib.md5(password.strip().encode('utf-8')).hexdigest()
         if db.execute("SELECT user_name, password FROM users WHERE user_name = :username AND password = :password",
                   {"username": username, "password": d_password}):
-            return render_template('books.html', books=books, user_name='user_name', message="Logged in as {} | ".format(session['user_name']))
+            #session['user_name'] = username
+            user = session.get('user_name', None)
+            in_session = True
+            return render_template('books.html', in_session='in_session', session_message="Logged in as {}".format(user))
         else:
             return render_template("error.html", message="Invalid Username or Password.")
 
@@ -49,24 +57,29 @@ def login():
 def books():
     book_results = False
     books = db.execute("SELECT id, isbn, title, author, year FROM books").fetchall()
-    return render_template('books.html', books=books)
+    user = session.get('user_name')
+    in_session = True
+    return render_template('books.html', books=books, in_session='in_session', session_message="Logged in as {}".format(user))
 
 
 @app.route("/search", methods = ['POST'])
 def search():
     book_results = True
     no_results = False
+    user = session.get('user_name')
     search_request = request.form.get("search")
+    in_session = True
     search_results = db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn ILIKE :search_request OR title ILIKE :search_request OR author ILIKE :search_request ", {"search_request": '%' + search_request + '%'}).fetchall()
     if db.execute("SELECT id, isbn, title, author, year FROM books WHERE isbn ILIKE :search_request OR title ILIKE :search_request OR author ILIKE :search_request ", {"search_request": '%' + search_request + '%'}).rowcount == 0:
         no_results = True
-        return render_template('books.html', search_results=search_results, no_results=True, message="No Results Returned!")
-    return render_template('books.html', search_results=search_results, book_results=True, no_results=False)
+        return render_template('books.html', search_results=search_results, no_results=True, in_session='in_session',  message="No Results Returned!", session_message="Logged in as {}".format(user))
+    return render_template('books.html', search_results=search_results, in_session='in_session', book_results=True, no_results=False, session_message="Logged in as {}".format(user))
 
 
 @app.route("/logout")
 def logout():
-    del session['user_name']
+    user = session.pop('user_name', None)
+    value_now = session.get('user_name', None)
     return redirect(url_for("index"))
 
 

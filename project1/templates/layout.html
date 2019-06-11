@@ -7,16 +7,20 @@
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<header>
+    {% if in_session %}
+    <div class="topnav">
+        <nav>
+            <a class="topnav" href="{{ url_for('logout') }}">Logout</a>
+            <p class="topnav"> {{ session_message }}</p>
+        </nav>
+    </div>
+    {% else %}
+    {% endif %}
 
+</header>
 <body>
 
-{% if is_session %}
-<ul id="nav_bar">
-    <li class="nav_button"><p> {{ message }}</p></li>
-    <li class="nav_button"><a href="{{ url_for('logout') }}">Logout</a></li>
-</ul>
-{% else %}
-{% endif %}
 
 {% block content%}
 {% endblock %}
